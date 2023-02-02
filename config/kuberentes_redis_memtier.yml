@@ -1,0 +1,78 @@
+kubernetes_redis_memtier:
+  description: Run memtier_benchmark against a K8s cluster.
+  flags:
+    # A custom runtimeClassName to apply to the redis pods.
+    #kubernetes_redis_memtier_runtime_class_name:
+
+    # If true, measure cpu usage on the server via
+    # top tool. Defaults to False.
+    redis_memtier_measure_cpu: false
+
+    # <noeviction|allkeys-lru|volatile-lru|allkeys-
+    # random|volatile-random|volatile-ttl>: Redis eviction policy when maxmemory
+    # limit is reached. This requires running clients with larger amounts of data
+    # than Redis can hold.
+    redis_eviction_policy: noeviction
+
+    # If true, uses the default redis snapshot policy.
+    redis_server_enable_snapshots: false
+
+    # Only supported for redis version >= 6, the number
+    # of redis server IO threads to use.
+    redis_server_io_threads: 4
+
+    # If true, attempts to pin IO threads to CPUs.
+    redis_server_io_threads_cpu_affinity: false
+
+    # If true, makes both reads and writes
+    # use IO threads instead of just writes.
+    redis_server_io_threads_do_reads: false
+
+    # Version of redis server to use.
+    redis_server_version: 7.0.3
+
+    # If true, simulate usage of disks on the server for aof backups.
+    redis_simulate_aof: false
+
+    # Total number of redis server processes. Useful
+    # when running with a redis version lower than 6.
+    redis_total_num_processes: 1
+
+  container_cluster:
+    cloud: GCP
+    type: Kubernetes
+    vm_count: 1
+    vm_spec:
+      GCP:
+        machine_type: n1-standard-1
+        zone: us-central1-c
+        image: projects/ubuntu-os-cloud/global/images/ubuntu-2004-focal-v20220927
+    nodepools:
+      redis:
+        vm_spec:
+          GCP:
+            machine_type: n1-standard-1
+            zone: us-central1-c
+            image: projects/ubuntu-os-cloud/global/images/ubuntu-2004-focal-v20220927
+        vm_count: 3
+      clients:
+        vm_spec:
+          GCP:
+            machine_type: n1-standard-1
+          AWS:
+            machine_type: m6i.xlarge
+          Azure:
+            machine_type: Standard_D4s_v5
+        vm_count: 1
+  vm_groups:
+    clients:
+      vm_spec:
+        GCP:
+          machine_type: n1-standard-1
+          zone: us-central1-c
+          image: projects/ubuntu-os-cloud/global/images/ubuntu-2004-focal-v20220927
+      vm_count: 1
+      disk_spec:
+        GCP:
+          disk_size: 50
+          disk_type: pd-ssd
