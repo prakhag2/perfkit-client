@@ -1,0 +1,19 @@
+coremark:
+  description: Run Coremark a simple processor benchmark
+  flags:
+    # <PTHREAD|FORK|SOCKET> Method to use for parallelism in the Coremark benchmark.
+    coremark_parallelism_method: PTHREAD
+
+  # VM Config
+  vm_groups:
+    default:
+      vm_spec:
+        GCP:
+          machine_type: n1-standard-2
+          zone: us-central1-a
+          boot_disk_type: pd-ssd
+          boot_disk_size: 50
+      disk_spec:
+        GCP:
+          disk_size: 50
+          disk_type: pd-ssd
