@@ -11,7 +11,11 @@ In order to run this setup, you will need the following:
 Steps to run:
 
 1. Build a docker image and run:
-docker run -p 8081:8081 -v <GCP service-account-json key file>:/tmp/creds.json:ro -e GOOGLE_APPLICATION_CREDENTIALS=/tmp/creds.json -e DB_HOST=<MySQL IP> -e DB_USER=<User> -e DB_PASSWORD=<Root> <docker-image>
+docker run -p 8081:8081 -v <GCP service-account-json key file>:/tmp/creds.json:ro \
+	-e GOOGLE_APPLICATION_CREDENTIALS=/tmp/creds.json \
+	-e DB_HOST=<MySQL IP> \
+	-e DB_USER=<User> \
+	-e DB_PASSWORD=<Root> <docker-image>
 
 2. To run a benchmark, the equivalent curl:
 curl --location --request POST '<ip-where-docker-image-is-running>:8080/runbenchmark' \
