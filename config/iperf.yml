@@ -1,0 +1,81 @@
+iperf:
+  description: Run iperf
+  flags:
+    # Run TCP, UDP or both
+    iperf_benchmarks: TCP
+
+    # Number of seconds to run iperf.
+    iperf_runtime_in_seconds: 60
+
+    # Server for sending traffic. Iperfwill run once for each value in the list.
+    iperf_sending_thread_count: 1
+
+    # In Mbits. Iperf will attempt to send at this bandwidth for TCP tests.
+    # If using multiple streams, each stream will attempt to send at this bandwidth
+    #iperf_tcp_per_stream_bandwidth:
+
+    # Number of seconds to wait in addition to iperf runtime before killing iperf client command.
+    #iperf_timeout:
+
+    # In Mbits. Iperf will attempt to send at this bandwidth for UDP tests.
+    # If using multiple streams, each stream will attempt to send at this bandwidth
+    #iperf_udp_per_stream_bandwidth:
+
+    # The amount of megabytes to increase bandwidth in each UDP stream test.
+    bandwidth_step_mb: 100
+
+    # The maximum bandwidth, in megabytes, to test in a UDP stream.
+    max_bandwidth_mb: 500
+
+    # The minimum bandwidth, in megabytes, to test in a UDP stream.
+    min_bandwidth_mb: 100
+
+    # Setting to false will disable the run of the TCP test.
+    run_tcp: true
+
+    # Setting to true will enable the run of the UDP test.
+    run_udp: false
+
+    # The socket buffer size in megabytes.
+    # If None is specified then the socket buffer size will not be set.
+    #socket_buffer_size:
+
+    # The number of parrallel streams to run in the TCP test.
+    tcp_number_of_streams: 10
+
+    # The amount of time to run the TCP stream test.
+    tcp_stream_seconds: 3
+
+    # UDP packet size in bytes.
+    udp_buffer_len: 100
+
+    # Number of parallel client threads to run.
+    udp_client_threads: 1
+
+    # The amount of time to run the UDP stream test.
+    udp_stream_seconds: 3
+
+  # VM config
+  vm_groups:
+    vm_1:
+      vm_spec:
+        GCP:
+          machine_type: n1-standard-2
+          zone: us-central1-a
+          boot_disk_type: pd-ssd
+          boot_disk_size: 50
+      disk_spec:
+        GCP:
+          disk_size: 50
+          disk_type: pd-ssd
+    vm_2:
+      vm_spec:
+        GCP:
+          machine_type: n1-standard-2
+          zone: us-central1-a
+          boot_disk_type: pd-ssd
+          boot_disk_size: 50
+      disk_spec:
+        GCP:
+          disk_size: 50
+          disk_type: pd-ssd
