@@ -1,0 +1,97 @@
+cassandra_stress:
+  description: Benchmark Cassandra using cassandra-stress
+  flags:
+    # <write|counter_write|user|read|counter_read|mixed>: cassandra-stress command to use.
+    cassandra_stress_command: write
+
+    # <ONE|QUORUM|LOCAL_ONE|LOCAL_QUORUM|EACH_QUORUM|ALL|ANY>: Set the consistency
+    # level to use during cassandra-stress.
+    cassandra_stress_consistency_level: QUORUM
+
+    # Read/write ratio of cassandra-stress. Only
+    # valid if cassandra_stress_command=mixed. By default, 50% read and 50% write.
+    cassandra_stress_mixed_ratio: write=1,read=1
+
+    # Specify what operations (inserts and/or
+    # queries) to run and the ratio of each operation. Only valid if
+    # cassandra_stress_command=user.
+    cassandra_stress_operations: insert=1
+
+    # <EXP|EXTREME|QEXTREME|GAUSSIAN|UNIFORM|~EXP|~EXTREME|~QEXTREME|~GAUSSIAN|~UNIFORM>
+    # The population distribution cassandra-stress uses. By default, each loader vm is given a
+    # range of keys [min, max], and loaders will read/insert keys sequentially
+    # from min to max.
+    #cassandra_stress_population_distribution:
+
+    # Additional parameters to use with
+    # distribution. This benchmark will calculate min, max for each distribution.
+    # Some distributions need more parameters. See: "./cassandra-stress help -pop"
+    # for more details. Comma-separated list.
+    cassandra_stress_population_parameters: ''
+
+    # The size of the population across all
+    # clients. By default, the size of the population equals to
+    # max(num_keys,cassandra_stress_preload_num_keys).
+    #cassandra_stress_population_size:
+
+    # Number of keys to preload into cassandra
+    # database. Read/counter_read/mixed modes require preloading cassandra
+    # database. If not set, the number of the keys preloaded will be the same as
+    # --num_keys for read/counter_read/mixed mode, the same as the number of
+    # loaders for write/counter_write/user mode.
+    #cassandra_stress_preload_num_keys:
+
+    # Path to cassandra-stress profile file. Only valid
+    # if --cassandra_stress_command=user.
+    cassandra_stress_profile: ''
+
+    # Number of replicas.
+    cassandra_stress_replication_factor: 3
+
+    # Number of retries when error encountered during stress.
+    cassandra_stress_retries: 1000
+
+    # Number of threads used in cassandra-stress
+    # tool on each loader node.
+    num_cassandra_stress_threads: 150
+
+    # Number of keys used in cassandra-stress tool across all loader
+    # vms. If unset, this benchmark will use 2000000 * NumCpusForBenchmark() on
+    # data nodes as the value.
+    num_keys: 0
+
+    # Concurrent read requests each server accepts.
+    cassandra_concurrent_reads: 32
+
+    # Optional maven repo mirror to use.
+    #cassandra_maven_repo_url:
+
+    # Num of replicas.
+    cassandra_replication_factor: 3
+
+  # Client and Server configurations
+  vm_groups:
+    workers:
+      vm_spec:
+        GCP:
+          machine_type: n1-standard-1
+          zone: us-central1-b
+          image: projects/ubuntu-os-cloud/global/images/ubuntu-2004-focal-v20220927
+          boot_disk_size: 50
+      vm_count: 3
+      disk_spec:
+        GCP:
+          disk_size: 50
+          disk_type: pd-ssd
+    clients:
+      vm_spec:
+        GCP:
+          machine_type: n1-standard-1
+          zone: us-central1-b
+          image: projects/ubuntu-os-cloud/global/images/ubuntu-2004-focal-v20220927
+          boot_disk_size: 50
+      vm_count: 1
+      disk_spec:
+        GCP:
+          disk_size: 50
+          disk_type: pd-ssd
