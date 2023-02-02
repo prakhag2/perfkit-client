@@ -1,0 +1,40 @@
+tomcat_wrk:
+  description: Run wrk against tomcat.
+  flags:
+    # Maximum number of simultaneous connections to attempt.
+    tomcat_wrk_max_connections: 128
+
+    # If true, report throughput/latency at all
+    # connection counts. If false (the default), report only the connection counts
+    # with lowest p50 latency and highest throughput.
+    tomcat_wrk_report_all_samples: false
+
+    # Length of time, in seconds, to run wrk for each connction count
+    tomcat_wrk_test_length: 120
+
+  # Client and Server configurations
+  vm_groups:
+    workers:
+      vm_spec:
+        GCP:
+          machine_type: n1-standard-1
+          zone: us-central1-b
+          image: projects/ubuntu-os-cloud/global/images/ubuntu-2004-focal-v20220927
+          boot_disk_size: 50
+      vm_count: 1
+      disk_spec:
+        GCP:
+          disk_size: 50
+          disk_type: pd-ssd
+    clients:
+      vm_spec:
+        GCP:
+          machine_type: n1-standard-1
+          zone: us-central1-b
+          image: projects/ubuntu-os-cloud/global/images/ubuntu-2004-focal-v20220927
+          boot_disk_size: 50
+      vm_count: 1
+      disk_spec:
+        GCP:
+          disk_size: 50
+          disk_type: pd-ssd
