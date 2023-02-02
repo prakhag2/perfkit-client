@@ -29,7 +29,7 @@ curl --location --request POST 'ip-where-docker-image-is-running:8080/runbenchma
     "config": "{\"aerospike\":{\"description\":\"RunsAerospike.\",\"flags\":{\"aerospike_benchmark_duration\":60,\"aerospike_client_threads_step_size\":8,\"aerospike_instances\":1,\"aerospike_max_client_threads\":128,\"aerospike_min_client_threads\":8,\"aerospike_num_keys\":1000000,\"aerospike_publish_detailed_samples\":false,\"aerospike_read_percent\":90,\"act_dynamic_load\":false,\"act_stop_on_complete\":true,\"aerospike_replication_factor\":1,\"aerospike_service_threads\":4,\"aerospike_storage_type\":\"memory\"},\"vm_groups\":{\"workers\":{\"vm_spec\":{\"GCP\":{\"machine_type\":\"n1-standard-1\",\"zone\":\"us-central1-b\",\"image\":\"projects/ubuntu-os-cloud/global/images/ubuntu-2004-focal-v20220927\",\"boot_disk_size\":50}},\"vm_count\":1,\"disk_spec\":{\"GCP\":{\"disk_size\":50,\"disk_type\":\"pd-ssd\"}}},\"clients\":{\"vm_spec\":{\"GCP\":{\"machine_type\":\"n1-standard-1\",\"zone\":\"us-central1-b\",\"image\":\"projects/ubuntu-os-cloud/global/images/ubuntu-2004-focal-v20220927\",\"boot_disk_size\":50}},\"vm_count\":1,\"disk_spec\":{\"GCP\":{\"disk_size\":50,\"disk_type\":\"pd-ssd\"}}}}}}"
 }'
 
-Sample config files are present in "config/".
+Sample config files are present in [config](https://github.com/prakhag2/perfkit-client/tree/main/config).
 
 3. When a job is run, it will generate a job-id. To fetch its state, run
 curl --location --request POST 'ip-where-docker-image-is-running:8080/getstate' \
