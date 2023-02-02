@@ -1,0 +1,55 @@
+apachebench:
+  description: Runs apachebench benchmark.
+  flags:
+    # Number of multiple requests to perform at a time.
+    apachebench_concurrency: 1
+
+    # <GET|POST|PUT|PATCH|DELETE>: Custom HTTP method for the requests.
+    apachebench_http_method: GET
+
+    # Enable the HTTP KeepAlive feature.
+    apachebench_keep_alive: true
+
+    # The maximum number of concurrent requests (<=1024) to use when searching for max throughput (when apachebench_run_mode=MAX_THROUGHPUT).
+    apachebench_max_concurrency: 1000
+
+    # Number of requests to perform for the benchmarking session.
+    apachebench_num_requests: 10000
+
+    # <MAX_THROUGHPUT|STANDARD>: Specify which run mode to use.
+    # MAX_THROUGHPUT: Searches for concurrency level with max requests per second while keeping number of failed requests at 0.
+    # STANDARD: Runs Apache Bench with specified flags.
+    apachebench_run_mode: STANDARD
+
+    # The size of the content the Apache server will serve (in bytes).
+    apachebench_server_content_size: 2070000
+
+    # Maximum number of seconds to wait before the socket times out.
+    apachebench_socket_timeout: 30
+
+  # Client and Server configurations
+  vm_groups:
+    workers:
+      vm_spec:
+        GCP:
+          machine_type: n1-standard-1
+          zone: us-central1-b
+          image: projects/ubuntu-os-cloud/global/images/ubuntu-2004-focal-v20220927
+          boot_disk_size: 50
+      vm_count: 1
+      disk_spec:
+        GCP:
+          disk_size: 50
+          disk_type: pd-ssd
+    clients:
+      vm_spec:
+        GCP:
+          machine_type: n1-standard-1
+          zone: us-central1-b
+          image: projects/ubuntu-os-cloud/global/images/ubuntu-2004-focal-v20220927
+          boot_disk_size: 50
+      vm_count: 1
+      disk_spec:
+        GCP:
+          disk_size: 50
+          disk_type: pd-ssd
