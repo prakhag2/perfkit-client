@@ -1,0 +1,130 @@
+fio:
+  description: Runs fio in sequential, random, read and write modes.
+  flags:
+    # Whether to collect a bandwidth log of the fio jobs.
+    fio_bw_log: false
+
+    # Timeout for fio commands in seconds.
+    #fio_command_timeout_sec:
+
+    # Whether to use O_DIRECT to bypass OS cache. This is strongly recommended, but not supported by all files.
+    fio_direct: true
+
+    # The amount of device to fill in prepare stage. The valid value can either be an integer, which represents the number of bytes to fill or a percentage, which represents the percentage of
+    # the device. A filesystem will be unmounted before filling and remounted afterwards. Only valid when --fio_target_mode is against_device_with_fill or against_file_with_fill.
+    fio_fill_size: 100%
+
+    # Generate a job file with the given scenarios. Special scenario 'all' generates all scenarios. Available scenarios are sequential_write, sequential_read, random_write, and
+    # random_read. Cannot use with --fio_jobfile.   You can also specify a scenario in the format accesspattern_blocksize_operation_workingset for a custom workload.
+    fio_generate_scenarios: ''
+
+    # Whether to collect clat histogram.
+    fio_hist_log: false
+
+    # IO queue depths to run on.
+    # Can specify a single number, like --fio_io_depths=1, a range, like --fio_io_depths=1-4, or a list, like --fio_io_depths=1-4,6-8
+    fio_io_depths: 1
+
+    # Whether to collect an IOPS log of the fio jobs.
+    fio_iops_log: false
+
+    # Job file that fio will use. If not given, use a job file bundled with PKB. Cannot use with --fio_generate_scenarios.
+    #fio_jobfile:
+
+    # Whether to collect a latency log of the fio jobs.
+    fio_lat_log: false
+
+    # By default, this will average each log entry in the fio latency, bandwidth, and iops logs over the specified period of time in milliseconds. If set to 0, fio will log an entry for
+    # every IO that completes, this can grow very quickly in size and can cause performance overhead.
+    fio_log_avg_msec: 1000
+
+    # Same as fio_log_avg_msec, but logs entries for completion latency histograms. If set to 0, histogram logging is disabled.
+    fio_log_hist_msec: 1000
+
+    # Number of concurrent fio jobs to run.
+    fio_num_jobs: 1
+
+    # Parameters to apply to all PKB generated fio jobs. Each member of the list should be of the form "param=value".
+    fio_parameters: randrepeat=0
+
+    # <tausworthe|lfsr|tausworthe64>: Which RNG to use for 4k Random IOPS.
+    fio_rng:  tausworthe64
+
+    # The number of seconds to run each fio job for.
+    fio_runtime: 600
+
+    # <against_device_with_fill|against_device_without_fill|against_file_with_fill|against_file_without_fill>
+    # Whether to run against a raw device or a file, and whether to prefill.
+    fio_target_mode:  against_file_without_fill
+
+    # Use the legacy scenario tables defined in fio_benchmark.py to resolve the scenario name in generate scenarios
+    fio_use_default_scenarios: true
+
+    # The size of the working set, in GB. If not given, use the full size of the device. If using --fio_generate_scenarios and not running against a raw device, you must pass
+    # fio_working_set_size.
+    #fio_working_set_size:
+
+    # Whether to run fio against multiple clients. Only applicable when running fio against network mounts and rw=write.
+    fio_write_against_multiple_clients: false
+
+    # Block size used to fill the disk before reading.
+    fill_disk_bs: 128k
+
+    # iodepth used to fill the disk.
+    fill_disk_iodepth: 64
+
+    # Amount to fill the disk before reading.
+    fill_disk_size: 4G
+
+    # Block size of the file to read.
+    read_bs: 512k
+
+    # iodepth used in reading the file.
+    read_iodepth: 1
+
+    # Size of the file to read.
+    read_size: 4G
+
+    # "filesize" field of the global section of the fio config. This is the size of the individual files.
+    # Default is 4 * (System Memory) or 100.0GB, whichever is smaller.
+    #fio_file_size:
+
+    # "size" field of the random_read_parallel section of the fio config.
+    # This is the size of I/O for this job. fio will run until this many bytes have been transferred. The
+    # default is 2 * (System Memory) or 100.0GB, whichever is smaller.
+    #fio_random_read_parallel_size:
+
+    # "size" field of the random_read section of the fio config.
+    # This is the size of I/O for this job. fio will run until this many bytes have been transferred.
+    # The default is 2 * (System Memory) or 100.0GB, whichever is smaller.
+    #fio_random_read_size:
+
+    # "size" field of the random_write section of the fio config.
+    # This is the size of I/O for this job. fio will run until this many bytes have been transferred.
+    # The default is 2 * (System Memory) or 100.0GB, whichever is smaller.
+    #fio_random_write_size:
+
+    # "size" field of the sequential_read section of the fio config.
+    # This is the size of I/O for this job. fio will run until this many bytes have been transferred.
+    # The default is 4 * (System Memory) or 100.0GB, whichever is smaller.
+    #fio_sequential_read_size:
+
+    # "size" field of the sequential_write section of the fio config.
+    # This is the size of I/O for this job. fio will run until this many bytes have been transferred.
+    # The default is 4 * (System Memory) or 100.0GB, whichever is smaller.
+    #fio_sequential_write_size:
+
+  # VM config
+  vm_groups:
+    default:
+      vm_spec:
+        GCP:
+          machine_type: n1-standard-2
+          zone: us-central1-a
+          boot_disk_type: pd-ssd
+          boot_disk_size: 50
+      disk_spec:
+        GCP:
+          disk_size: 50
+          disk_type: pd-ssd
+      vm_count: 1
