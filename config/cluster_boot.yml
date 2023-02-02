@@ -1,0 +1,37 @@
+cluster_boot:
+  description: Create a cluster, record all times to boot.
+  flags:
+    # We don't want boot time samples to be affected from retrying, so don't
+    # retry VM creation failures.
+    retry_on_rate_limited: False
+    retry_gce_subnetwork_not_ready: False
+
+  # VM config
+  vm_groups:
+    default:
+      vm_spec:
+        AWS:
+          machine_type: m5.large
+          zone: us-east-1
+        Azure:
+          machine_type: Standard_D2s_v3
+          zone: eastus
+          boot_disk_type: StandardSSD_LRS
+        GCP:
+          machine_type: n1-standard-2
+          zone: us-central1-a
+          boot_disk_type: pd-ssd
+          boot_disk_size: 50
+        IBMCloud:
+          machine_type: cx2-2x4
+          zone: us-south-1
+        Kubernetes:
+          image: null
+        OpenStack:
+          machine_type: t1.small
+          zone: nova
+      vm_count: 1
+      disk_spec:
+        GCP:
+          disk_size: 50
+          disk_type: pd-ssd
