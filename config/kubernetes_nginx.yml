@@ -1,0 +1,82 @@
+kubernetes_nginx:
+  description: Benchmarks Nginx server performance.
+  flags:
+    # A custom runtimeClassName to apply to the nginx pods.
+    #kubernetes_nginx_runtime_class_name:
+
+    # The path to an Nginx config file that should be applied to the
+    # server instead of the default one.
+    #nginx_conf:
+
+    # The size of the content Nginx will serve in bytes.
+    # Larger files stress the network over the VMs.
+    nginx_content_size: 1024
+
+    # For each load spec in the list, wrk2 will be run once
+    # against Nginx with those parameters. The format is
+    # "target_request_rate:duration:threads:connections", with each value being
+    # per client (so running with 2 clients would double the target rate, threads,
+    # and connections (but not duration since they are run concurrently)). The
+    # target request rate is measured in requests per second and the duration is
+    # measured in seconds. Increasing the duration or connections does not impact
+    # the aggregate target rate for the client.
+    nginx_load_configs: 100:60:1:1
+
+    # The port that nginx server will listen to. 0 will use
+    # default ports (80 or 443 depending on --nginx_use_ssl).
+    nginx_server_port: 0
+
+    # If True, skip running the nginx_load_configs and run
+    # wrk2 once aiming to throttle the nginx server.
+    nginx_throttle: false
+
+    # Use HTTPs when connecting to nginx.
+    nginx_use_ssl: false
+
+    # The maximum number of simultaneous connections
+    # that can be opened by a worker process.
+    nginx_worker_connections: 1024
+
+  container_specs:
+    kubernetes_nginx:
+      image: k8s_nginx
+  container_registry: {}
+  container_cluster:
+    cloud: GCP
+    type: Kubernetes
+    vm_count: 1
+    vm_spec:
+      GCP:
+        machine_type: n1-standard-1
+        zone: us-central1-c
+    nodepools:
+      nginx:
+        vm_count: 1
+        vm_spec:
+          GCP:
+            machine_type: n2-standard-4
+          AWS:
+            machine_type: m6i.xlarge
+          Azure:
+            machine_type: Standard_D4s_v5
+      clients:
+        vm_count: 1
+        vm_spec:
+          GCP:
+            machine_type: n1-standard-1
+          AWS:
+            machine_type: m6i.xlarge
+          Azure:
+            machine_type: Standard_D4s_v5
+  vm_groups:
+    clients:
+      vm_spec:
+        GCP:
+          machine_type: n1-standard-1
+          zone: us-central1-c
+          image: projects/ubuntu-os-cloud/global/images/ubuntu-2004-focal-v20220927
+      vm_count: 1
+      disk_spec:
+        GCP:
+          disk_size: 50
+          disk_type: pd-ssd
