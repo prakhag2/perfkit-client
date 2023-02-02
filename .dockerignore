@@ -1,0 +1,16 @@
+target
+!target/*.jar
+.git
+.cache
+logs/
+*.md
+**/*.class
+.env
+.editorconfig
+.github
+LICENSE
+README
+CONTRIBUTION
+Makefile
+vendor/
+
