@@ -15,10 +15,10 @@ docker run -p 8081:8081 -v <GCP service-account-json key file>:/tmp/creds.json:r
 	-e GOOGLE_APPLICATION_CREDENTIALS=/tmp/creds.json \
 	-e DB_HOST=MySQL IP \
 	-e DB_USER=User \
-	-e DB_PASSWORD=Password <<docker-image>>
+	-e DB_PASSWORD=Password docker-image
 
 2. To run a benchmark, the equivalent curl:
-curl --location --request POST '<ip-where-docker-image-is-running>:8080/runbenchmark' \
+curl --location --request POST 'ip-where-docker-image-is-running:8080/runbenchmark' \
 --header 'Content-Type: application/json' \
 --header 'Content-Encoding: gzip' \
 --data-raw '{
@@ -32,7 +32,7 @@ curl --location --request POST '<ip-where-docker-image-is-running>:8080/runbench
 Sample config files are present in "config/".
 
 3. When a job is run, it will generate a job-id. To fetch its state, run
-curl --location --request POST 'localhost:8080/getstate' \
+curl --location --request POST 'ip-where-docker-image-is-running:8080/getstate' \
 --header 'Content-Type: application/json' \
 --header 'Content-Encoding: gzip' \
 --data-raw '{
@@ -40,7 +40,7 @@ curl --location --request POST 'localhost:8080/getstate' \
 }'
 
 4. For a running job, get the logs
-curl --location --request POST 'localhost:8080/getlogs' \
+curl --location --request POST 'ip-where-docker-image-is-running:8080/getlogs' \
 --header 'Content-Type: application/json' \
 --header 'Content-Encoding: gzip' \
 --data-raw '{
@@ -49,7 +49,7 @@ curl --location --request POST 'localhost:8080/getlogs' \
 }'
 
 5. Once the job finishes, its results are exported in BQ. To fetch the results, run:
-curl --location --request POST 'localhost:8080/getresult' \
+curl --location --request POST 'ip-where-docker-image-is-running:8080/getresult' \
 --header 'Content-Type: application/json' \
 --header 'Content-Encoding: gzip' \
 --data-raw '{
