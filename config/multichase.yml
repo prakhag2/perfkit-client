@@ -1,0 +1,71 @@
+multichase:
+  description: Run a benchmark from the multichase benchmark suite.
+  flags:
+    # Additional flags to use when executing multichase. Example: '-O 16 -y'.
+    multichase_additional_flags: ''
+
+    # Argument to refine the chase type specified with multichase_chase_type.
+    # Applicable for the following types: critword, critword2, work.
+    #multichase_chase_arg: 1
+
+    # <critword|critword2|incr|movdqa|movntdqa|nta|parallel10|parallel2|parallel3|parallel4|parallel5|parallel6|parallel7|parallel8|parallel9|simple|t0|t1|t2|work>
+    # Chase type to use when executing multichase. Passed to multichase via its -c flag.
+    multichase_chase_type: simple
+
+    # Memory size to use when executing multichase. Passed to multichase via its -m flag.
+    # If it differs from multichase_memory_size_min, then multichase is executed multiple
+    # times, starting with a memory size equal to the min and doubling while the memory size does not exceed the max.
+    # Can be specified as a percentage of the total memory on the machine.
+    # An explicit memory size that must be convertible to an integer number of bytes (e.g. '7.5 MiB')
+    # or a percentage of the total memory rounded down to the next integer byte (e.g. '97.5%', which
+    # translates to 1046898278 bytes if a total of 1 GiB memory is available).)
+    multichase_memory_size_max:  256 mebibyte
+
+    # Memory size to use when executing multichase. Passed to multichase via its -m flag.
+    # If it differs from multichase_memory_size_max, then multichase is executed multiple
+    # times, starting with a memory size equal to the min and doubling while the memory size does not exceed the max.
+    # Can be specified as a percentage of the total memory on the machine.
+    # An explicit memory size that must be convertible to an integer number of bytes (e.g. '7.5 MiB')
+    # or a percentage of the total memory rounded down to the next integer byte (e.g. '97.5%', which
+    # translates to 1046898278 bytes if a total of 1 GiB memory is available).)
+    multichase_memory_size_min:  256 mebibyte
+
+    # If provided, numactl is used to control memory placement and process CPU affinity.
+    # Examples: "--membind=0" or "--cpunodebind=0".
+    #multichase_numactl_options:
+
+    # Stride size to use when executing multichase. Passed to multichase via its -s flag.
+    # If it differs from multichase_stride_size_min, then multichase is executed multiple
+    # times, starting with a stride size equal to the min and doubling while the stride size does not exceed the max.
+    # Can be specified as a percentage of the maximum memory (-m flag) of each multichase execution.
+    # An explicit memory size that must be convertible to an integer number of bytes (e.g. '7.5 MiB')
+    # or a percentage of the total memory rounded down to the next integer byte (e.g. '97.5%', which
+    # translates to 1046898278 bytes if a total of 1 GiB memory is available).)
+    multichase_stride_size_max: 256 byte
+
+    # Stride size to use when executing multichase. Passed to multichase via its -s flag.
+    # If it differs from multichase_stride_size_max, then multichase is executed multiple
+    # times, starting with a stride size equal to the min and doubling while the stride size does not exceed the max.
+    # Can be specified as a percentage of the maximum memory (-m flag) of each multichase execution.
+    # An explicit memory size that must be convertible to an integer number of bytes (e.g. '7.5 MiB')
+    # or a percentage of the total memory rounded down to the next integer byte (e.g. '97.5%',
+    # which translates to 1046898278 bytes if a total of 1 GiB memory is available).)
+    multichase_stride_size_min: 256 byte
+
+    # Number of threads (one per core), to use when executing multichase.
+    # Passed to multichase via its -t flag.
+    multichase_thread_count: 1
+
+  # VM config
+  vm_groups:
+    default:
+      vm_spec:
+        GCP:
+          machine_type: n1-standard-2
+          zone: us-central1-a
+          boot_disk_type: pd-ssd
+          boot_disk_size: 50
+      disk_spec:
+        GCP:
+          disk_size: 50
+          disk_type: pd-ssd
